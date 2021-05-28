@@ -10,7 +10,9 @@
          threading)
 
 
-(define coord-api "https://iplocation.com/")
+(define coord-api-url "https://iplocation.com/")
+(define owm-api-token (getenv "OWM_API_KEY"))
+(define owm-api-url "https://api.openweathermap.org/data/2.5/forecast")
 
 
 (define (port->jsexpr port)
@@ -26,12 +28,17 @@
     (unless (empty? headers) headers)))
 
 
+(define (GET url-str)
+  (get-pure-port
+    (string->url url-str)))
+
+
 (define (get-coords req)
   (let* ([client-ip (request-client-ip req)]
          [payload (string->bytes/utf-8 (format "ip=~a" client-ip))])
     (port->jsexpr
       (POST
-        coord-api
+        coord-api-url
         #:payload payload
         #:headers '("Host: iplocation.com"
                     "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
@@ -39,14 +46,19 @@
                     "Content-type: application/x-www-form-urlencoded; charset=UTF-8")))))
 
 
-(define (get-forecast coords)
-  null)
+(define (get-hourly-forecast coords)
+  (let* ([lat (hash-ref coords 'lat)]
+         [lon (hash-ref coords 'lng)]
+         [url (format "~a?lat=~a&lon=~a&appid=~a"
+               owm-api-url lat lon owm-api-token)])
+    (displayln url)
+    (port->jsexpr (GET url))))
 
 
 (define (forecast req)
   (let* ([coords (get-coords req)]
-         [forecast (get-forecast coords)])
-    (response/jsexpr coords)))
+         [forecast (get-hourly-forecast coords)])
+    (response/jsexpr forecast)))
 
 
 (define (not-found req)
