@@ -67,7 +67,10 @@
         [pressure (round (/ (nested-hash-ref item 'main 'pressure) 1.3332))]
         [weather (hash-ref (first (hash-ref item 'weather)) 'description)]
         [wind (nested-hash-ref item 'wind 'speed)]
-        [icon-url (hash-ref (first (hash-ref item 'weather)) 'icon)])
+        [icon-url
+          (format
+            owm-icon-url
+            (hash-ref (first (hash-ref item 'weather)) 'icon))])
     (hasheq
       'time time
       'humidity humidity
