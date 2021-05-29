@@ -82,7 +82,7 @@
 
 
 (define (normalize-forecast forecast)
-  (let ([city (hash-ref forecast 'city)]
+  (let ([city (nested-hash-ref forecast 'city 'name)]
         [new-forecast
           (map normalize-forecast-item (hash-ref forecast 'list))])
     (hasheq 'city city 'list new-forecast)))
@@ -92,7 +92,6 @@
   (let* ([coords (get-coords req)]
          [forecast (get-hourly-forecast coords)]
          [new-forecast (normalize-forecast forecast)])
-    (displayln new-forecast)
     (response/jsexpr new-forecast)))
 
 
