@@ -8,6 +8,13 @@
 - Run `racket app/api.rkt`
 - Enjoy
 
+
+## How it looks like
+
+
+![example](https://github.com/m3xan1k/weather-app/example.jpg)
+
+
 ## TODO
 
 - [ ] Dockerize project
