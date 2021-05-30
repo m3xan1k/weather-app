@@ -12,7 +12,7 @@
 ## How it looks like
 
 
-![example](https://github.com/m3xan1k/weather-app/example.jpg)
+![example](https://github.com/m3xan1k/weather-app/blob/main/example.jpg)
 
 
 ## TODO
