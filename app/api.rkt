@@ -20,7 +20,7 @@
     "Content-type: application/x-www-form-urlencoded; charset=UTF-8"))
 (define owm-units "metric")
 (define owm-counts 8)
-(define owm-icon-url "http://openweathermap.org/img/wn/~a@2x.png")
+(define owm-icon-url "http://openweathermap.org/img/wn/~a.png")
 
 
 (define (port->jsexpr port)
@@ -56,7 +56,6 @@
          [lon (hash-ref coords 'lng)]
          [url (format "~a?lat=~a&lon=~a&appid=~a&units=~a&cnt=~a"
                owm-api-url lat lon owm-api-token owm-units owm-counts)])
-    (displayln url)
     (port->jsexpr (GET url))))
 
 
@@ -97,7 +96,11 @@
 
 (define (main-page req)
   (response/output
-    (λ (op) (display (include-template "index.html") op))))
+    (λ (op)
+      (let ([forecast (include-template "static/html/forecast.html")]
+            [script (include-template "static/js/main.js")]
+            [style (include-template "static/css/style.css")])
+        (display (include-template "static/html/base.html") op)))))
 
 
 (define (not-found req)
