@@ -1,10 +1,9 @@
 const btn = document.querySelector("#btn");
 const forecastDiv = document.querySelector("#forecast");
-const serverIP = "YOUR_SERVER_IP";
 
 
 async function getForecast() {
-    const response = await fetch(`http://${serverIP}/forecast`);
+    const response = await fetch('/forecast');
     const forecast = await response.json();
     return forecast
 }
